@@ -26,7 +26,9 @@ class RegisterActivity : AppCompatActivity() {
                 Log.i(TAG, user.toString())
             }
         }else{
+
             Log.i(TAG, "ta vazia")
+
         }
 
 
