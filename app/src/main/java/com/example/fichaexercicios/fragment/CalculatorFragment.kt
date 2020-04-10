@@ -15,12 +15,13 @@ import kotlinx.android.synthetic.main.fragment_calculator.*
 import java.text.SimpleDateFormat
 import butterknife.Optional;
 import com.example.fichaexercicios.*
+import com.example.fichaexercicios.observable.OnDisplayChanged
 import com.example.fichaexercicios.viewModel.CalculatorViewModel
 
 const val EXTRA_NAME = "name"
 const val EXTRA_HISTORY = "history"
 
-class CalculatorFragment : Fragment() {
+class CalculatorFragment : Fragment(), OnDisplayChanged {
     private lateinit var viewModel: CalculatorViewModel
 
     private val TAG = MainActivity::class.java.simpleName
