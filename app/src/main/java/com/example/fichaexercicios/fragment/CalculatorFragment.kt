@@ -3,25 +3,19 @@ package com.example.fichaexercicios.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.ButterKnife
 import butterknife.OnClick
 import kotlinx.android.synthetic.main.fragment_calculator.*
-import net.objecthunter.exp4j.ExpressionBuilder
 import java.text.SimpleDateFormat
-import java.util.*
 import butterknife.Optional;
 import com.example.fichaexercicios.*
 import com.example.fichaexercicios.viewModel.CalculatorViewModel
-import kotlinx.android.synthetic.main.fragment_calculator.view.*
 
 const val EXTRA_NAME = "name"
 const val EXTRA_HISTORY = "history"
@@ -40,63 +34,36 @@ class CalculatorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_calculator, container, false)
         viewModel = ViewModelProviders.of(this).get(CalculatorViewModel::class.java)
-        viewModel.display.let { view.text_visor.text = it }
         ButterKnife.bind(this, view)
         return view
-
         // Inflate the layout for this fragment
+    }
 
+    override fun onStart() {
+        viewModel.registerListener(this)
+        super.onStart()
+    }
+
+    override fun onDisplayChanged(value: String?){
+        value?.let { text_visor.text = it }
+    }
+
+    override fun onDestroy() {
+        viewModel.unregisterListener()
+        super.onDestroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         list_historic?.layoutManager = LinearLayoutManager(activity as Context)
         list_historic?.adapter = HistoryAdapter(
             activity as Context,
             R.layout.item_expression,
             listHistory
         )
-
-
     }
-
-    @OnClick (R.id.button_equals)
-    fun onClickEquals(view: View){
-
-        text_visor.text = viewModel.onClickEquals()
-
-        /*
-        val symbol = view.tag.toString()
-        Log.i(TAG, "click no botão $symbol")
-        var conta : String = text_visor.text.toString()
-        val expression =
-            ExpressionBuilder(text_visor.text.toString()).build()
-        lastResult = expression.evaluate().toString()
-        var teste : Operation =
-            Operation(
-                conta,
-                expression.evaluate().toString()
-            )
-        listHistory.add(teste)
-        text_visor.text = expression.evaluate().toString()
-
-        list_historic?.layoutManager = LinearLayoutManager(activity as Context)
-        list_historic?.adapter = HistoryAdapter(
-            activity as Context,
-            R.layout.item_expression,
-            listHistory
-        )
-
-        Log.i(TAG, "list History = ${listHistory}")
-        Log.i(TAG, "O resultado da expressão é ${text_visor.text}")
-        Toast.makeText(activity as Context, "Hora atual: ${format.format(Date())}", Toast.LENGTH_SHORT).show()
-        */
-    }
-
 
     @Optional()
     @OnClick ( R.id.button_00,
@@ -120,21 +87,12 @@ class CalculatorFragment : Fragment() {
         R.id.button_point
     )
     fun onClickSymbol(view: View) {
+        viewModel.onClickSymbol(view.tag.toString())
+    }
 
-        text_visor.text = viewModel.onClickSymbol(view.tag.toString())
-
-        /*
-        val symbol = view.tag.toString()
-        Log.i(TAG, "click no botão $symbol")
-        if (text_visor.text == "0") {
-            text_visor.text = symbol
-        }else if (symbol == "CE" || symbol == "C"){
-            text_visor.text = "0"
-        }else{
-            text_visor.append(symbol)
-        }
-
-         */
+    @OnClick (R.id.button_equals)
+    fun onClickEquals(view: View){
+        viewModel.onClickEquals()
     }
 
 }
