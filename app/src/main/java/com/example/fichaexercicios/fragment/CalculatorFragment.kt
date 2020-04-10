@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -18,15 +20,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import butterknife.Optional;
 import com.example.fichaexercicios.*
+import com.example.fichaexercicios.viewModel.CalculatorViewModel
+import kotlinx.android.synthetic.main.fragment_calculator.view.*
 
 const val EXTRA_NAME = "name"
 const val EXTRA_HISTORY = "history"
 
 class CalculatorFragment : Fragment() {
+    private lateinit var viewModel: CalculatorViewModel
+
     private val TAG = MainActivity::class.java.simpleName
     private var lastResult = "0"
     private val VISOR_KEY = "visor"
-
     private var listHistory = mutableListOf<Operation>()
     @SuppressLint("SimpleDateFormat")
     var format: SimpleDateFormat = SimpleDateFormat("HH:mm:ss")
@@ -37,6 +42,8 @@ class CalculatorFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_calculator, container, false)
+        viewModel = ViewModelProviders.of(this).get(CalculatorViewModel::class.java)
+        viewModel.display.let { view.text_visor.text = it }
         ButterKnife.bind(this, view)
         return view
 
@@ -59,6 +66,10 @@ class CalculatorFragment : Fragment() {
 
     @OnClick (R.id.button_equals)
     fun onClickEquals(view: View){
+
+        text_visor.text = viewModel.onClickEquals()
+
+        /*
         val symbol = view.tag.toString()
         Log.i(TAG, "click no botão $symbol")
         var conta : String = text_visor.text.toString()
@@ -83,7 +94,9 @@ class CalculatorFragment : Fragment() {
         Log.i(TAG, "list History = ${listHistory}")
         Log.i(TAG, "O resultado da expressão é ${text_visor.text}")
         Toast.makeText(activity as Context, "Hora atual: ${format.format(Date())}", Toast.LENGTH_SHORT).show()
+        */
     }
+
 
     @Optional()
     @OnClick ( R.id.button_00,
@@ -108,6 +121,9 @@ class CalculatorFragment : Fragment() {
     )
     fun onClickSymbol(view: View) {
 
+        text_visor.text = viewModel.onClickSymbol(view.tag.toString())
+
+        /*
         val symbol = view.tag.toString()
         Log.i(TAG, "click no botão $symbol")
         if (text_visor.text == "0") {
@@ -117,6 +133,8 @@ class CalculatorFragment : Fragment() {
         }else{
             text_visor.append(symbol)
         }
+
+         */
     }
 
 }
