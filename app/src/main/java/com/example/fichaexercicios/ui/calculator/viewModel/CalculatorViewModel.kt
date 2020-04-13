@@ -34,8 +34,4 @@ class CalculatorViewModel : ViewModel(){
         notifyOnDisplayChanged()
     }
 
-    fun getHistory() : List<Operation> {
-        return calculatorLogic.history()
-    }
-
 }

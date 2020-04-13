@@ -36,9 +36,5 @@ class CalculatorLogic {
         return result
     }
 
-    fun history () : List<Operation> {
-        return storage.getAll()
-    }
-
 
 }

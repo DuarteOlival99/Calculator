@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:weightSum="2"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="100dp"
             android:paddingLeft="16dp"
             android:orientation="vertical">
 

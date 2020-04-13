@@ -18,12 +18,13 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.example.fichaexercicios.*
 import com.example.fichaexercicios.data.models.Operation
+import com.example.fichaexercicios.ui.history.observable.OnHistoryChanged
 import com.example.fichaexercicios.ui.history.viewModel.HistoryViewModel
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_history.*
 import kotlinx.android.synthetic.main.item_expression.*
 
-class HistoryFragment : Fragment() {
+class HistoryFragment : Fragment(), OnHistoryChanged {
     private val TAG = HistoryFragment::class.java.simpleName
     private lateinit var viewModel: HistoryViewModel
     private var listHistory = mutableListOf<Operation>()
@@ -46,6 +47,7 @@ class HistoryFragment : Fragment() {
     }
 
     override fun onStart() {
+        viewModel.registerListener(this)
         super.onStart()
         historico()
 
@@ -55,8 +57,17 @@ class HistoryFragment : Fragment() {
 
     }
 
+    override fun onHistoryChanged(list: MutableList<Operation>) {
+        list?.let { listHistory = it }
+    }
+
+    override fun onDestroy() {
+        viewModel.unregisterListener()
+        super.onDestroy()
+    }
+
      fun historico(){
-         listHistory = viewModel.getHistory().toMutableList()
+         listHistory = viewModel.History()
          page_list_historic?.layoutManager = LinearLayoutManager(activity as Context)
          Log.i(TAG, "Historic")
          page_list_historic?.adapter = HistoryAdapter(
@@ -66,12 +77,6 @@ class HistoryFragment : Fragment() {
          )
          Log.i(TAG, listHistory.toString())
      }
-
-    fun removeItem(position: Int){
-
-        viewModel.delete(position)
-        historico()
-    }
 
 
 }

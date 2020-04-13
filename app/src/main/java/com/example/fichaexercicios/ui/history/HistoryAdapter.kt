@@ -7,14 +7,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.OnLongClick
 import com.example.fichaexercicios.data.models.Operation
+import com.example.fichaexercicios.ui.history.viewModel.HistoryViewModel
 import kotlinx.android.synthetic.main.item_expression.view.*
 
-class HistoryAdapter(private val context: Context, private val layout: Int, private val
+class HistoryAdapter(private val context: Context, private val layout: Int, private var
 items: MutableList<Operation>) :
     RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>(){
+
+    private lateinit var viewModel: HistoryViewModel
 
     class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val expression: TextView = view.text_expression
@@ -27,6 +31,7 @@ items: MutableList<Operation>) :
             LayoutInflater.from(context).inflate(layout, parent, false)
         )
     }
+
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.expression.text = items[position].exprexion
@@ -46,9 +51,20 @@ items: MutableList<Operation>) :
 
     }
 
+    fun setOperation(operations: MutableList<Operation>){
+        this.items = operations
+        notifyDataSetChanged()
+    }
+
+    fun getOperationAt(position: Int) : Operation {
+        return items.get(position)
+    }
+
+
     private fun removeItem(info: Operation) {
         val position = items.indexOf(info)
         items.removeAt(position)
+        viewModel.delete(position)
         notifyItemRemoved(position)
     }
 
