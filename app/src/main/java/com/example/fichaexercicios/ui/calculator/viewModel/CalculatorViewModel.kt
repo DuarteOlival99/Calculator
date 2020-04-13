@@ -1,9 +1,9 @@
-package com.example.fichaexercicios.viewModel
+package com.example.fichaexercicios.ui.calculator.viewModel
 
 import androidx.lifecycle.ViewModel
 import com.example.fichaexercicios.data.models.Operation
-import com.example.fichaexercicios.logic.CalculatorLogic
-import com.example.fichaexercicios.observable.OnDisplayChanged
+import com.example.fichaexercicios.ui.calculator.logic.CalculatorLogic
+import com.example.fichaexercicios.ui.calculator.observable.OnDisplayChanged
 
 class CalculatorViewModel : ViewModel(){
     //implementação da ViewModel

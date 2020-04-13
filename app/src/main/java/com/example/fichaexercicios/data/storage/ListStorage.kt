@@ -1,4 +1,4 @@
-package com.example.fichaexercicios.storage
+package com.example.fichaexercicios.data.storage
 
 import com.example.fichaexercicios.data.models.Operation
 import kotlinx.coroutines.Dispatchers
@@ -25,13 +25,17 @@ class ListStorage private constructor() {
 
     suspend fun insert(operation: Operation){
         withContext(Dispatchers.IO){
-            Thread.sleep(30000)
+            //Thread.sleep(30000)
             storage.add(operation)
         }
     }
 
     fun getAll() : List<Operation> {
         return storage.toList()
+    }
+
+    fun delete(position: Int)  {
+       storage.removeAt(position)
     }
 
 

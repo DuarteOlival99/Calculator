@@ -1,41 +1,20 @@
-package com.example.fichaexercicios.ui.calculator.viewModel
+package com.example.fichaexercicios.ui.history.viewModel
 
 import androidx.lifecycle.ViewModel
 import com.example.fichaexercicios.data.models.Operation
-import com.example.fichaexercicios.ui.calculator.logic.CalculatorLogic
-import com.example.fichaexercicios.observable.OnDisplayChanged
+import com.example.fichaexercicios.ui.history.logic.HistoryLogic
 
-class CalculatorViewModel : ViewModel(){
+class HistoryViewModel : ViewModel(){
     //implementação da ViewModel
-    private val calculatorLogic = CalculatorLogic()
-    var display: String = ""
-    private var listener: OnDisplayChanged? = null
-
-    private fun notifyOnDisplayChanged(){
-        listener?.onDisplayChanged(display)
-    }
-
-    fun registerListener(listener: OnDisplayChanged) {
-        this.listener = listener
-        listener.onDisplayChanged(display)
-    }
-
-    fun unregisterListener() {
-        listener = null
-    }
-
-    fun onClickSymbol(symbol: String) {
-        display = calculatorLogic.insertSymbol(display, symbol)
-        notifyOnDisplayChanged()
-    }
-
-    fun onClickEquals() {
-        display = calculatorLogic.performOperation(display).toString()
-        notifyOnDisplayChanged()
-    }
+    private val historyLogic = HistoryLogic()
+    var listHistory = mutableListOf<Operation>()
 
     fun getHistory() : List<Operation> {
-        return calculatorLogic.history()
+        return historyLogic.history()
+    }
+
+    fun delete(position: Int)  {
+        historyLogic.delete(position)
     }
 
 }

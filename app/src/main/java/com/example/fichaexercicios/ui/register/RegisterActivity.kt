@@ -1,4 +1,4 @@
-package com.example.fichaexercicios
+package com.example.fichaexercicios.ui.register
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,10 @@ import android.os.Parcelable
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.fichaexercicios.R
+import com.example.fichaexercicios.data.models.User
+import com.example.fichaexercicios.ui.login.EXTRA_LOGIN
+import com.example.fichaexercicios.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import org.apache.commons.codec.digest.DigestUtils
 
@@ -56,7 +60,12 @@ class RegisterActivity : AppCompatActivity() {
 //                            Log.i(TAG, "ta vazia")
 //                        }
                         if (!aux) {
-                            val user: User = User(name, email, pass)
+                            val user: User =
+                                User(
+                                    name,
+                                    email,
+                                    pass
+                                )
                             val intent = Intent(this, LoginActivity::class.java)
                             intent.apply { putExtra(EXTRA_REGISTER, user) }
                             startActivity(intent)

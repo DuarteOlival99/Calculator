@@ -1,8 +1,9 @@
-package com.example.fichaexercicios.ui
+package com.example.fichaexercicios.ui.calculator
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +17,10 @@ import java.text.SimpleDateFormat
 import butterknife.Optional;
 import com.example.fichaexercicios.*
 import com.example.fichaexercicios.data.models.Operation
-import com.example.fichaexercicios.observable.OnDisplayChanged
+import com.example.fichaexercicios.ui.calculator.observable.OnDisplayChanged
+import com.example.fichaexercicios.ui.calculator.viewModel.CalculatorViewModel
 import com.example.fichaexercicios.ui.history.HistoryAdapter
-import com.example.fichaexercicios.viewModel.CalculatorViewModel
+import kotlinx.android.synthetic.main.fragment_history.*
 
 const val EXTRA_NAME = "name"
 const val EXTRA_HISTORY = "history"
@@ -26,7 +28,7 @@ const val EXTRA_HISTORY = "history"
 class CalculatorFragment : Fragment(), OnDisplayChanged {
     private lateinit var viewModel: CalculatorViewModel
 
-    private val TAG = MainActivity::class.java.simpleName
+    private val TAG = CalculatorFragment::class.java.simpleName
     private var lastResult = "0"
     private val VISOR_KEY = "visor"
     private var listHistory = mutableListOf<Operation>()
@@ -47,6 +49,7 @@ class CalculatorFragment : Fragment(), OnDisplayChanged {
     override fun onStart() {
         viewModel.registerListener(this)
         super.onStart()
+        historico()
     }
 
     override fun onDisplayChanged(value: String?){
@@ -60,13 +63,6 @@ class CalculatorFragment : Fragment(), OnDisplayChanged {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        list_historic?.layoutManager = LinearLayoutManager(activity as Context)
-        list_historic?.adapter =
-            HistoryAdapter(
-                activity as Context,
-                R.layout.item_expression,
-                listHistory
-            )
     }
 
     @Optional()
@@ -97,6 +93,19 @@ class CalculatorFragment : Fragment(), OnDisplayChanged {
     @OnClick (R.id.button_equals)
     fun onClickEquals(view: View){
         viewModel.onClickEquals()
+        historico()
+    }
+
+    fun historico(){
+        listHistory = viewModel.getHistory().toMutableList()
+        list_historic?.layoutManager = LinearLayoutManager(activity as Context)
+        Log.i(TAG, "Historic")
+        list_historic?.adapter = HistoryAdapter(
+            activity as Context,
+            R.layout.item_expression,
+            listHistory
+        )
+        Log.i(TAG, listHistory.toString())
     }
 
 }

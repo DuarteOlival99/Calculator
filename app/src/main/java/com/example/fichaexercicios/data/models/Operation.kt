@@ -1,4 +1,4 @@
-package com.example.fichaexercicios.data
+package com.example.fichaexercicios.data.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

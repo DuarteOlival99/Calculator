@@ -1,7 +1,7 @@
-package com.example.fichaexercicios.logic
+package com.example.fichaexercicios.ui.calculator.logic
 
 import com.example.fichaexercicios.data.models.Operation
-import com.example.fichaexercicios.storage.ListStorage
+import com.example.fichaexercicios.data.storage.ListStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

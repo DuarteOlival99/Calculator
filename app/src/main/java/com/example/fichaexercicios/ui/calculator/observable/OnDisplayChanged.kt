@@ -1,4 +1,4 @@
-package com.example.fichaexercicios.observable
+package com.example.fichaexercicios.ui.calculator.observable
 
 interface OnDisplayChanged {
 
