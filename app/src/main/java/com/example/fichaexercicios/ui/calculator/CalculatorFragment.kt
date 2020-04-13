@@ -1,4 +1,4 @@
-package com.example.fichaexercicios.fragment
+package com.example.fichaexercicios.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,7 +15,9 @@ import kotlinx.android.synthetic.main.fragment_calculator.*
 import java.text.SimpleDateFormat
 import butterknife.Optional;
 import com.example.fichaexercicios.*
+import com.example.fichaexercicios.data.models.Operation
 import com.example.fichaexercicios.observable.OnDisplayChanged
+import com.example.fichaexercicios.ui.history.HistoryAdapter
 import com.example.fichaexercicios.viewModel.CalculatorViewModel
 
 const val EXTRA_NAME = "name"
@@ -59,11 +61,12 @@ class CalculatorFragment : Fragment(), OnDisplayChanged {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         list_historic?.layoutManager = LinearLayoutManager(activity as Context)
-        list_historic?.adapter = HistoryAdapter(
-            activity as Context,
-            R.layout.item_expression,
-            listHistory
-        )
+        list_historic?.adapter =
+            HistoryAdapter(
+                activity as Context,
+                R.layout.item_expression,
+                listHistory
+            )
     }
 
     @Optional()

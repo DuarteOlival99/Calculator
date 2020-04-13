@@ -1,10 +1,9 @@
-package com.example.fichaexercicios
+package com.example.fichaexercicios.ui
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.fichaexercicios.R
-import com.example.fichaexercicios.fragment.CalculatorFragment
-import com.example.fichaexercicios.fragment.HistoryFragment
+import com.example.fichaexercicios.ui.history.HistoryFragment
 
 class NavigationManager {
 
@@ -18,13 +17,17 @@ class NavigationManager {
         }
 
         fun goToCalculatorFragment(fm: FragmentManager){
-            placeFragment(fm,
+            placeFragment(
+                fm,
                 CalculatorFragment()
             )
         }
 
         fun goToHistoryFragment(fm: FragmentManager){
-            placeFragment(fm, HistoryFragment())
+            placeFragment(
+                fm,
+                HistoryFragment()
+            )
         }
 
     }

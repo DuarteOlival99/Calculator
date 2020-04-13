@@ -1,8 +1,8 @@
-package com.example.fichaexercicios.viewModel
+package com.example.fichaexercicios.ui.calculator.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.fichaexercicios.fragment.CalculatorFragment
-import com.example.fichaexercicios.logic.CalculatorLogic
+import com.example.fichaexercicios.data.models.Operation
+import com.example.fichaexercicios.ui.calculator.logic.CalculatorLogic
 import com.example.fichaexercicios.observable.OnDisplayChanged
 
 class CalculatorViewModel : ViewModel(){
@@ -32,6 +32,10 @@ class CalculatorViewModel : ViewModel(){
     fun onClickEquals() {
         display = calculatorLogic.performOperation(display).toString()
         notifyOnDisplayChanged()
+    }
+
+    fun getHistory() : List<Operation> {
+        return calculatorLogic.history()
     }
 
 }

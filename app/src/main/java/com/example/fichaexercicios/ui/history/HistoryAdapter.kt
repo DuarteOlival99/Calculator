@@ -1,13 +1,10 @@
-package com.example.fichaexercicios
+package com.example.fichaexercicios.ui
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
-import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.core.content.contentValuesOf
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_expression.view.*
 
@@ -24,7 +21,9 @@ items: MutableList<Operation>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             HistoryViewHolder {
-        return HistoryViewHolder(LayoutInflater.from(context).inflate(layout, parent, false))
+        return HistoryViewHolder(
+            LayoutInflater.from(context).inflate(layout, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {

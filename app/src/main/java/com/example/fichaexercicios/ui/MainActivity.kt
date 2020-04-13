@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         setupDrawerMenu()
+        if(!screenRotated(savedInstanceState)){
+            NavigationManager.goToCalculatorFragment(supportFragmentManager)
+        }
         val user = intent.getParcelableExtra<User>(EXTRA_LOGIN)
         if(user != null){
 
@@ -39,8 +42,11 @@ class MainActivity : AppCompatActivity(),
             navUserEmail.text = email
 
         }
-        NavigationManager.goToHistoryFragment(supportFragmentManager)
-        NavigationManager.goToCalculatorFragment(supportFragmentManager)
+
+    }
+
+    private fun screenRotated(savedInstanceState: Bundle?) : Boolean {
+        return savedInstanceState != null
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

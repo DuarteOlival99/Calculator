@@ -1,6 +1,6 @@
 package com.example.fichaexercicios.storage
 
-import com.example.fichaexercicios.Operation
+import com.example.fichaexercicios.data.models.Operation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
