@@ -12,6 +12,8 @@ class HistoryViewModel : ViewModel(){
     var listHistory = mutableListOf<Operation>()
     private var listener: OnHistoryChanged? = null
 
+
+    //Observable De ...
     private fun notifyOnHistoryChanged(){
         listener?.onHistoryChanged(listHistory)
     }
@@ -24,14 +26,11 @@ class HistoryViewModel : ViewModel(){
     fun unregisterListener() {
         listener = null
     }
+    //Observable ...ate aqui
 
     fun getHistory() {
         listHistory = historyLogic.history().toMutableList()
-        notifyOnHistoryChanged()
-    }
-
-    fun History(): MutableList<Operation> {
-        return listHistory
+        notifyOnHistoryChanged() //chama o Observable
     }
 
     fun delete(position: Int)  {

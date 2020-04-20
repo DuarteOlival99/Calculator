@@ -54,6 +54,7 @@ class CalculatorFragment : Fragment(), OnDisplayChanged, OnHistoryChanged {
         viewModel.registerListener(this)
         viewModelHistory.registerListener(this)
         super.onStart()
+        viewModelHistory.getHistory()
         historico()
     }
 
@@ -63,6 +64,12 @@ class CalculatorFragment : Fragment(), OnDisplayChanged, OnHistoryChanged {
 
     override fun onHistoryChanged(list: MutableList<Operation>) {
         list?.let { listHistory = it }
+        page_list_historic?.adapter = HistoryAdapter(
+            viewModelHistory,
+            activity as Context,
+            R.layout.item_expression,
+            listHistory
+        )
     }
 
     override fun onDestroy() {
@@ -111,6 +118,7 @@ class CalculatorFragment : Fragment(), OnDisplayChanged, OnHistoryChanged {
         list_historic?.layoutManager = LinearLayoutManager(activity as Context)
         Log.i(TAG, "Historic")
         list_historic?.adapter = HistoryAdapter(
+            viewModelHistory,
             activity as Context,
             R.layout.item_expression,
             listHistory

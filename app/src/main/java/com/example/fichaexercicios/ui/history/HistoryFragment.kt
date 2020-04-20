@@ -36,6 +36,7 @@ class HistoryFragment : Fragment(), OnHistoryChanged {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_history, container, false)
         viewModel = ViewModelProviders.of(this).get(HistoryViewModel::class.java)
+        viewModel.getHistory()
         ButterKnife.bind(this, view)
         return view
     }
@@ -59,6 +60,12 @@ class HistoryFragment : Fragment(), OnHistoryChanged {
 
     override fun onHistoryChanged(list: MutableList<Operation>) {
         list?.let { listHistory = it }
+        page_list_historic?.adapter = HistoryAdapter(
+            viewModel,
+            activity as Context,
+            R.layout.item_expression,
+            listHistory
+        )
     }
 
     override fun onDestroy() {
@@ -66,17 +73,16 @@ class HistoryFragment : Fragment(), OnHistoryChanged {
         super.onDestroy()
     }
 
-     fun historico(){
-         listHistory = viewModel.History()
+     fun historico() {
+         viewModel.getHistory()
          page_list_historic?.layoutManager = LinearLayoutManager(activity as Context)
          Log.i(TAG, "Historic")
          page_list_historic?.adapter = HistoryAdapter(
+             viewModel,
              activity as Context,
              R.layout.item_expression,
              listHistory
          )
          Log.i(TAG, listHistory.toString())
      }
-
-
 }

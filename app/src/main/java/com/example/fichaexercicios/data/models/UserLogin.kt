@@ -5,9 +5,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-class User(val name: String, val email: String, val pass: String) : Parcelable {
-
-    var uuid: String = UUID.randomUUID().toString()
+class UserLogin(val name: String, val email: String) : Parcelable {
 
     override fun toString(): String {
         return "Nome: $name, Email: $email"

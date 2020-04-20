@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.fichaexercicios.R
 import com.example.fichaexercicios.data.models.User
+import com.example.fichaexercicios.data.models.UserLogin
 import com.example.fichaexercicios.ui.login.EXTRA_LOGIN
 import com.example.fichaexercicios.ui.login.LoginActivity
 import com.example.fichaexercicios.ui.navigation.NavigationManager
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity(),
                 supportFragmentManager
             )
         }
-        val user = intent.getParcelableExtra<User>(EXTRA_LOGIN)
+        val user = intent.getParcelableExtra<UserLogin>(EXTRA_LOGIN)
         if(user != null){
 
             Log.i(TAG, user.toString())

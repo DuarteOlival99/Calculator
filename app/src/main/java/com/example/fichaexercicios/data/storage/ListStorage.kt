@@ -1,12 +1,15 @@
 package com.example.fichaexercicios.data.storage
 
 import com.example.fichaexercicios.data.models.Operation
+import com.example.fichaexercicios.data.models.User
+import com.example.fichaexercicios.ui.history.observable.OnGetAllOperations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class ListStorage private constructor() {
 
     private val storage = mutableListOf<Operation>()
+    private val users = mutableListOf<User>()
 
     companion object {
 
@@ -30,8 +33,18 @@ class ListStorage private constructor() {
         }
     }
 
-    fun getAll() : List<Operation> {
-        return storage.toList()
+    suspend fun insertUser(user: User){
+        withContext(Dispatchers.IO){
+            users.add(user)
+        }
+    }
+
+    fun getAllUsers() : List<User>{
+        return users.toList()
+    }
+
+    fun getAll() : List<Operation>{
+       return storage.toList()
     }
 
     fun delete(position: Int)  {

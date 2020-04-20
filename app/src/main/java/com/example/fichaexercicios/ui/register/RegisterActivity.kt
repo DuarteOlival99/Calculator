@@ -4,32 +4,33 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
+import butterknife.ButterKnife
 import com.example.fichaexercicios.R
 import com.example.fichaexercicios.data.models.User
+import com.example.fichaexercicios.ui.history.viewModel.HistoryViewModel
 import com.example.fichaexercicios.ui.login.EXTRA_LOGIN
 import com.example.fichaexercicios.ui.login.LoginActivity
+import com.example.fichaexercicios.ui.register.viewModel.RegisterViewModel
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import org.apache.commons.codec.digest.DigestUtils
 
 const val EXTRA_REGISTER = "register"
 
 class RegisterActivity : AppCompatActivity() {
     private val TAG = RegisterActivity::class.java.simpleName
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        val userList = intent.getParcelableArrayListExtra<Parcelable>(EXTRA_LOGIN)
-
-        if (userList != null) {
-            for (user in userList) {
-                Log.i(TAG, user.toString())
-            }
-        } else {
-            Log.i(TAG, "ta vazia")
-        }
+        viewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
 
         button_cancel.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
@@ -38,59 +39,58 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         button_register_page.setOnClickListener {
-            val name = campo_name.text.toString()
-            val pass = DigestUtils.sha256Hex(button_password.text.toString())
-            val passConfirm = DigestUtils.sha256Hex(button_confirm_password.text.toString())
-            val email = campo_email.text.toString()
 
-            //val hash: String = DigestUtils.sha256Hex("password")
-            if (pass == passConfirm) { //valida se as password correspondem
-                if (isEmailValid(email)) { //valida se o email e valido
-                    if (!campo_name.text.isEmpty()) { // valida se o username nao esta vazio
-                        var aux = false
-//                        if(userList != null){
-//                            for (user in userList){
-//                                if (user.javaClass.name == name){
-//                                    Log.i(TAG, user.javaClass.name + "teste")
-//                                    aux = true
-//                                    break
-//                                }
-//                            }
-//                        }else{
-//                            Log.i(TAG, "ta vazia")
-//                        }
-                        if (!aux) {
-                            val user: User =
-                                User(
-                                    name,
-                                    email,
-                                    pass
-                                )
-                            val intent = Intent(this, LoginActivity::class.java)
-                            intent.apply { putExtra(EXTRA_REGISTER, user) }
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(this, "Username ja existe", Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
-                        Toast.makeText(this, "Introduza um username", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Toast.makeText(this, "Email Invalido", Toast.LENGTH_SHORT).show()
-                    campo_email.text.clear()
+            if (button_password.text.toString().isNotEmpty() && button_confirm_password.text.toString().isNotEmpty()){
+
+                val name = campo_name.text.toString()
+                val pass = DigestUtils.sha256Hex(button_password.text.toString())
+                val passConfirm = DigestUtils.sha256Hex(button_confirm_password.text.toString())
+                val email = campo_email.text.toString()
+
+                if(validaCampos(name, email, pass, passConfirm)){
+                    val user: User = User(name, email, pass)
+                    viewModel.newUser(user)
+
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
-            } else {
-                Toast.makeText(
-                    this,
-                    "As password não correspondem, volte a tentar",
-                    Toast.LENGTH_SHORT
-                ).show()
-                button_password.text.clear()
-                button_confirm_password.text.clear()
+            }else{
+                Toast.makeText(this, "Palavra Passe não introduzida", Toast.LENGTH_SHORT).show()
             }
 
         }
+    }
+
+    private fun validaCampos(name: String, email: String, pass: String, passConfirm: String) : Boolean {
+
+        if (viewModel.validaNome(name)){
+            if (viewModel.validaEmail(email)){
+                if(viewModel.validaPass(pass, passConfirm)){
+                    if (viewModel.validaUserList(name)){
+                        return true
+                    }else{
+                        Toast.makeText(
+                            this,
+                            "Nome ja existente",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }else{
+                    Toast.makeText(
+                        this,"As password não correspondem, volte a tentar",
+                        Toast.LENGTH_SHORT).show()
+                    button_password.text.clear()
+                    button_confirm_password.text.clear()
+                }
+            }else{
+                Toast.makeText(this, "Email Invalido", Toast.LENGTH_SHORT).show()
+                campo_email.text.clear()
+            }
+        }else{
+            Toast.makeText(this, "Introduza um username", Toast.LENGTH_SHORT).show()
+        }
+        return false
     }
 
     fun isEmailValid(email: String): Boolean {
