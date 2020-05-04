@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.register.RegisterActivity"/>
+        <activity android:name="com.example.fichaexercicios.domain.auth.register.activity.RegisterActivity"/>
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name="com.example.fichaexercicios.domain.auth.login.activity.LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MainActivity" />
+            android:name=".domain.calculator.MainActivity" />
     </application>
 
 </manifest>
