@@ -1,16 +1,22 @@
 package com.example.fichaexercicios.data.local.list
 
+import android.util.Log
 import com.example.fichaexercicios.data.entity.Operation
 import com.example.fichaexercicios.data.entity.User
+import com.example.fichaexercicios.data.remote.requests.Operations
+import com.example.fichaexercicios.data.remote.responses.LoginResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.apache.commons.codec.digest.DigestUtils
 
 class ListStorage private constructor() {
 
     private val storage = mutableListOf<Operation>()
+    private var storageList = mutableListOf<Operations>()
 
-    private val defaultUser = User("teste", "teste@gmail.com", "teste")
+    private val defaultUser = User("teste", "teste@gmail.com", DigestUtils.sha256Hex("teste"))
     private val users = mutableListOf<User>(defaultUser)
+    var login = LoginResponse("", "")
 
     companion object {
 
@@ -26,6 +32,18 @@ class ListStorage private constructor() {
             }
         }
 
+    }
+
+    fun atualizaOperations(list: List<Operations>){
+            storageList = list.toMutableList()
+    }
+
+    fun getListOperations() : List<Operations>{
+        return storageList
+    }
+
+    fun insertLogin(loginResponse : LoginResponse){
+        login = loginResponse
     }
 
     suspend fun insert(operation: Operation){
@@ -51,6 +69,16 @@ class ListStorage private constructor() {
 
     fun delete(position: Int)  {
        storage.removeAt(position)
+    }
+
+    fun validaToken(): Boolean {
+        Log.i("valida", login.validaLogin().toString())
+       return login.validaLogin()
+
+    }
+
+    fun getToken(): LoginResponse {
+        return login
     }
 
 

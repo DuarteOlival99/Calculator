@@ -14,4 +14,7 @@ interface OperationDao {
     @Query("SELECT * FROM operation")
     suspend fun getAll(): List<Operation>
 
+    @Query("SELECT * FROM operation WHERE uuid - :uuid")
+    suspend fun getById(uuid: String): Operation
+
 }

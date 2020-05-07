@@ -2,12 +2,16 @@ package com.example.fichaexercicios.ui.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.ButterKnife
@@ -17,11 +21,14 @@ import java.text.SimpleDateFormat
 import butterknife.Optional;
 import com.example.fichaexercicios.*
 import com.example.fichaexercicios.data.entity.Operation
+import com.example.fichaexercicios.domain.calculator.MainActivity
 import com.example.fichaexercicios.ui.listeners.OnDisplayChanged
 import com.example.fichaexercicios.ui.viewmodels.viewmodels.CalculatorViewModel
 import com.example.fichaexercicios.ui.adapters.HistoryAdapter
 import com.example.fichaexercicios.ui.listeners.OnHistoryChanged
+import com.example.fichaexercicios.ui.listeners.OnOperationPost
 import com.example.fichaexercicios.ui.viewmodels.viewmodels.HistoryViewModel
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_history.*
 
 const val EXTRA_NAME = "name"
@@ -61,6 +68,7 @@ class CalculatorFragment : Fragment(),
 
     }
 
+
     override fun onDisplayChanged(value: String?) {
         value?.let { text_visor.text = it }
     }
@@ -86,6 +94,7 @@ class CalculatorFragment : Fragment(),
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(CalculatorViewModel::class.java)
         viewModelHistory = ViewModelProviders.of(this).get(HistoryViewModel::class.java)
+        Log.i("teste", viewModelHistory.getLogin().toString())
     }
 
         @Optional()
@@ -120,6 +129,11 @@ class CalculatorFragment : Fragment(),
             viewModelHistory.getHistory()
 
         }
+
+    @OnClick(R.id.button_exclamation)
+    fun onClickExclamation(view: View){
+        viewModel.deleteOperations()
+    }
 
         fun historico() {
             list_historic?.layoutManager = LinearLayoutManager(activity as Context)

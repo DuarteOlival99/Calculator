@@ -35,11 +35,15 @@ class RegisterActivity : AppCompatActivity() {
 
                 val name = campo_name.text.toString()
                 val pass = DigestUtils.sha256Hex(button_password.text.toString())
+                val password = button_password.text.toString()
                 val passConfirm = DigestUtils.sha256Hex(button_confirm_password.text.toString())
                 val email = campo_email.text.toString()
 
                 if(validaCampos(name, email, pass, passConfirm)){
                     val user: User = User(name, email, pass)
+
+                    viewModel.onClickRegister(name, email, password)
+
                     viewModel.newUser(user)
 
                     val intent = Intent(this, LoginActivity::class.java)
