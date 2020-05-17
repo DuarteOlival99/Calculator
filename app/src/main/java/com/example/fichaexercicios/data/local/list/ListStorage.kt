@@ -81,5 +81,9 @@ class ListStorage private constructor() {
         return login
     }
 
+    fun getTokenShared(): String? {
+        return login.getToken()
+    }
+
 
 }

@@ -20,7 +20,7 @@ class OperationLogic(private val retrofit: Retrofit) {
 
     suspend fun postOperation(expression: String, result: Double){
         val service = retrofit.create(OperationService::class.java)
-        Log.i("teste", "$expression = $result")
+        //Log.i("teste", "$expression = $result")
         val response = service.addOperation(token, Operations(UUID.randomUUID().toString(), expression, result))
         CoroutineScope(Dispatchers.IO).launch {
             if(response.isSuccessful) {

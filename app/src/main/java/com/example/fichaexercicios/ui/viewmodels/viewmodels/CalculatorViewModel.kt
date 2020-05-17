@@ -5,7 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.example.fichaexercicios.data.remote.RetrofitBuilder
 import com.example.fichaexercicios.data.remote.responses.LoginResponse
+import com.example.fichaexercicios.data.remote.responses.OperationResponse
+import com.example.fichaexercicios.data.repositories.OperationRepository
 import com.example.fichaexercicios.data.room.CalculatorDatabase
+import com.example.fichaexercicios.data.room.dao.OperationDao
 import com.example.fichaexercicios.domain.auth.login.logic.AuthLogic
 import com.example.fichaexercicios.ui.viewmodels.logic.CalculatorLogic
 import com.example.fichaexercicios.ui.listeners.OnDisplayChanged
@@ -17,17 +20,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
+const val ENDPOINnT = "https://cm-calculadora.herokuapp.com/api/"
 
 class CalculatorViewModel(application: Application) : AndroidViewModel(application){
 
+    private val operationLogic = OperationLogic(RetrofitBuilder.getInstance(ENDPOINnT))
     private val storage = CalculatorDatabase.getInstance(application).operationDao()
-    private val calculatorLogic = CalculatorLogic(storage)
+    private val repository = OperationRepository(storage, RetrofitBuilder.getInstance(ENDPOINnT))
+    private val calculatorLogic = CalculatorLogic(repository)
     //implementação da ViewModel
 //    private val calculatorLogic = CalculatorLogic()
     var display: String = ""
     private var listener: OnDisplayChanged? = null
     private var listenerOperation: OnOperationPost? = null
-    //private val operationLogic = OperationLogic(RetrofitBuilder.getInstance(ENDPOINT))
+
 
     fun onClickOperation(uuid: String, expression: String, result: Double){
         CoroutineScope(Dispatchers.IO).launch {
@@ -68,6 +74,10 @@ class CalculatorViewModel(application: Application) : AndroidViewModel(applicati
     fun onClickEquals() {
         display = calculatorLogic.performOperation(display).toString()
         notifyOnDisplayChanged()
+    }
+
+    fun getToken(): String? {
+        return calculatorLogic.getToken()
     }
 
 }

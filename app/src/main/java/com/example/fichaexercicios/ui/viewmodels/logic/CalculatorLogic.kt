@@ -6,8 +6,8 @@ import com.example.fichaexercicios.data.local.list.ListStorage
 import com.example.fichaexercicios.data.remote.RetrofitBuilder
 import com.example.fichaexercicios.data.remote.requests.Operations
 import com.example.fichaexercicios.data.remote.services.OperationService
+import com.example.fichaexercicios.data.repositories.OperationRepository
 import com.example.fichaexercicios.data.room.dao.OperationDao
-import com.example.fichaexercicios.ui.viewmodels.viewmodels.ENDPOINT
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,11 +15,14 @@ import net.objecthunter.exp4j.ExpressionBuilder
 import retrofit2.Retrofit
 import java.util.*
 
-class CalculatorLogic(private val storage: OperationDao) {
+const val ENDPOINT = "https://cm-calculadora.herokuapp.com/api/"
+
+class CalculatorLogic(private val repository: OperationRepository) {
+
 
     private val retrofit: Retrofit = RetrofitBuilder.getInstance(ENDPOINT)
     private val operation = OperationLogic(retrofit)
-    private val storagee = ListStorage.getInstance()
+    private val storage = ListStorage.getInstance()
 
 
 
@@ -39,13 +42,7 @@ class CalculatorLogic(private val storage: OperationDao) {
         val result = expressionBuilder.evaluate()
         CoroutineScope(Dispatchers.IO).launch {
             Log.i("teste", "$expression =$result")
-            operation.postOperation(expression, result)
-            storage.insert(
-                Operation(
-                    expression,
-                    result
-                )
-            )
+           repository.performOperation(expression)
 
         }
         return result
@@ -55,6 +52,10 @@ class CalculatorLogic(private val storage: OperationDao) {
         CoroutineScope(Dispatchers.IO).launch {
             operation.deleteOperations()
         }
+    }
+
+    fun getToken(): String? {
+        return storage.getTokenShared()
     }
 
 

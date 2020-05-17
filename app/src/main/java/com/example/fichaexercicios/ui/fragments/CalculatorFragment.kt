@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,6 +44,7 @@ class CalculatorFragment : Fragment(),
     private var lastResult = "0"
     private val VISOR_KEY = "visor"
     private var listHistory = mutableListOf<Operation>()
+    private var token = ""
 
     @SuppressLint("SimpleDateFormat")
     var format: SimpleDateFormat = SimpleDateFormat("HH:mm:ss")
@@ -64,6 +66,21 @@ class CalculatorFragment : Fragment(),
         viewModelHistory.registerListener(this)
         viewModelHistory.getHistory()
         historico()
+
+        val pref = PreferenceManager.getDefaultSharedPreferences(context)
+        pref.apply {
+            token = getString("token", "").toString()
+        }
+
+        if(token == ""){
+
+            val editor = pref.edit()
+            editor
+                .putString("token", viewModel.getToken())
+                .apply()
+
+        }
+
         super.onStart()
 
     }

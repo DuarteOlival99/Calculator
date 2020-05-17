@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
@@ -14,6 +15,7 @@ import com.example.fichaexercicios.domain.auth.register.activity.RegisterActivit
 import com.example.fichaexercicios.data.entity.UserLogin
 import com.example.fichaexercicios.domain.auth.login.viewModel.LoginViewModel
 import com.example.fichaexercicios.ui.listeners.OnLoginTry
+import com.example.fichaexercicios.ui.utils.NavigationManager
 
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -27,12 +29,14 @@ const val EXTRA_LOGIN = "login"
 class LoginActivity : AppCompatActivity(), OnLoginTry {
     private val TAG = LoginActivity::class.java.simpleName
     private lateinit var viewModel: LoginViewModel
+    private var token = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         Log.i("Login", viewModel.getUsers().toString())
+
 
 
 
@@ -83,6 +87,13 @@ class LoginActivity : AppCompatActivity(), OnLoginTry {
 
     override fun onStart() {
         viewModel.registerListener(this)
+
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        pref.apply {
+            val tokenn = getString("token", "").toString()
+            Log.i("token", tokenn)
+        }
+
         super.onStart()
     }
 
