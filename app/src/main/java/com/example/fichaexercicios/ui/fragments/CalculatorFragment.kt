@@ -40,6 +40,8 @@ class CalculatorFragment : Fragment(),
     private lateinit var viewModel: CalculatorViewModel
     private lateinit var viewModelHistory: HistoryViewModel
 
+    private val prefe = PreferenceManager.getDefaultSharedPreferences(context)
+
     private val TAG = CalculatorFragment::class.java.simpleName
     private var lastResult = "0"
     private val VISOR_KEY = "visor"

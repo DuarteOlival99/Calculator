@@ -1,5 +1,6 @@
 package com.example.fichaexercicios.domain.calculator
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -11,8 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.fichaexercicios.R
 import com.example.fichaexercicios.data.entity.UserLogin
+import com.example.fichaexercicios.data.sensors.location.FusedLocation
+import com.example.fichaexercicios.data.sensors.location.OnLocationChangedListener
 import com.example.fichaexercicios.domain.auth.login.activity.LoginActivity
 import com.example.fichaexercicios.ui.utils.NavigationManager
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -22,6 +29,8 @@ class MainActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener{
     private val TAG = MainActivity::class.java.simpleName
     private var token = ""
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

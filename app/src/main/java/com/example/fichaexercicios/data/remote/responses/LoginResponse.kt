@@ -1,6 +1,6 @@
 package com.example.fichaexercicios.data.remote.responses
 
-data class LoginResponse (private val email: String, private val token: String) {
+data class  LoginResponse (private val email: String, private val token: String) {
 
 
     fun validaLogin(): Boolean {
