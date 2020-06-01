@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import com.example.fichaexercicios.R
 import com.example.fichaexercicios.ui.fragments.CalculatorFragment
 import com.example.fichaexercicios.ui.fragments.HistoryFragment
+import com.example.fichaexercicios.ui.fragments.MapFragment
 
 class NavigationManager {
 
@@ -28,6 +29,13 @@ class NavigationManager {
             placeFragment(
                 fm,
                 HistoryFragment()
+            )
+        }
+
+        fun goToMapFragment(fm: FragmentManager){
+            placeFragment(
+                fm,
+                MapFragment()
             )
         }
 

@@ -40,8 +40,6 @@ class CalculatorFragment : Fragment(),
     private lateinit var viewModel: CalculatorViewModel
     private lateinit var viewModelHistory: HistoryViewModel
 
-    private val prefe = PreferenceManager.getDefaultSharedPreferences(context)
-
     private val TAG = CalculatorFragment::class.java.simpleName
     private var lastResult = "0"
     private val VISOR_KEY = "visor"
@@ -116,56 +114,56 @@ class CalculatorFragment : Fragment(),
         Log.i("teste", viewModelHistory.getLogin().toString())
     }
 
-        @Optional()
-        @OnClick(
-            R.id.button_00,
-            R.id.button_22,
-            R.id.button_ce,
-            R.id.button_0,
-            R.id.button_1,
-            R.id.button_2,
-            R.id.button_3,
-            R.id.button_4,
-            R.id.button_5,
-            R.id.button_6,
-            R.id.button_7,
-            R.id.button_8,
-            R.id.button_9,
-            R.id.button_less,
-            R.id.button_adition,
-            R.id.button_multiplication,
-            R.id.button_division,
-            R.id.button_C,
-            R.id.button_point
-        )
-        fun onClickSymbol(view: View) {
-            viewModel.onClickSymbol(view.tag.toString())
-        }
+    @Optional()
+    @OnClick(
+        R.id.button_00,
+        R.id.button_22,
+        R.id.button_ce,
+        R.id.button_0,
+        R.id.button_1,
+        R.id.button_2,
+        R.id.button_3,
+        R.id.button_4,
+        R.id.button_5,
+        R.id.button_6,
+        R.id.button_7,
+        R.id.button_8,
+        R.id.button_9,
+        R.id.button_less,
+        R.id.button_adition,
+        R.id.button_multiplication,
+        R.id.button_division,
+        R.id.button_C,
+        R.id.button_point
+    )
+    fun onClickSymbol(view: View) {
+        viewModel.onClickSymbol(view.tag.toString())
+    }
 
-        @OnClick(R.id.button_equals)
-        fun onClickEquals(view: View) {
-            viewModel.onClickEquals()
-            viewModelHistory.getHistory()
+    @OnClick(R.id.button_equals)
+    fun onClickEquals(view: View) {
+        viewModel.onClickEquals()
+        viewModelHistory.getHistory()
 
-        }
+    }
 
     @OnClick(R.id.button_exclamation)
     fun onClickExclamation(view: View){
         viewModel.deleteOperations()
     }
 
-        fun historico() {
-            list_historic?.layoutManager = LinearLayoutManager(activity as Context)
-            Log.i(TAG, "Historic")
-            list_historic?.adapter =
-                HistoryAdapter(
-                    viewModelHistory,
-                    activity as Context,
-                    R.layout.item_expression,
-                    listHistory
-                )
-            Log.i(TAG, listHistory.toString())
-        }
+    fun historico() {
+        list_historic?.layoutManager = LinearLayoutManager(activity as Context)
+        Log.i(TAG, "Historic")
+        list_historic?.adapter =
+            HistoryAdapter(
+                viewModelHistory,
+                activity as Context,
+                R.layout.item_expression,
+                listHistory
+            )
+        Log.i(TAG, listHistory.toString())
+    }
 
 
 

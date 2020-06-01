@@ -1,21 +1,23 @@
 package com.example.fichaexercicios.data.local.list
 
+import android.location.Location
 import android.util.Log
 import com.example.fichaexercicios.data.entity.Operation
 import com.example.fichaexercicios.data.entity.User
 import com.example.fichaexercicios.data.remote.requests.Operations
 import com.example.fichaexercicios.data.remote.responses.LoginResponse
+import com.google.android.gms.location.LocationResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.apache.commons.codec.digest.DigestUtils
 
 class ListStorage private constructor() {
 
     private val storage = mutableListOf<Operation>()
     private var storageList = mutableListOf<Operations>()
+    private var locationFinal : LocationResult? = null
 
-    private val defaultUser = User("teste", "teste@gmail.com", DigestUtils.sha256Hex("teste"))
-    private val users = mutableListOf<User>(defaultUser)
+//    private val defaultUser = User("teste", "teste@gmail.com", DigestUtils.sha256Hex("teste"))
+    private val users = mutableListOf<User>()
     var login = LoginResponse("", "")
 
     companion object {
@@ -32,6 +34,14 @@ class ListStorage private constructor() {
             }
         }
 
+    }
+
+    fun atualizaLocalizacao(location: LocationResult?){
+        locationFinal = location
+    }
+
+    fun getLocalizacao(): LocationResult? {
+        return locationFinal
     }
 
     fun atualizaOperations(list: List<Operations>){

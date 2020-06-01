@@ -3,10 +3,13 @@ package com.example.fichaexercicios.data.sensors.location
 import android.content.Context
 import android.os.Looper
 import android.util.Log
+import com.example.fichaexercicios.data.local.list.ListStorage
+import com.example.fichaexercicios.ui.fragments.MapFragment
 import com.google.android.gms.location.*
-import kotlin.random.Random.Default.Companion
 
 class FusedLocation(context: Context) : LocationCallback() {
+
+    private val storage = ListStorage.getInstance()
 
     private val TAG = FusedLocation::class.java.simpleName
     // intervalos de tempo em que a localizacao é verificada, 20 segundos
@@ -37,7 +40,7 @@ class FusedLocation(context: Context) : LocationCallback() {
         private var listener: OnLocationChangedListener? = null
         private var instance: FusedLocation? = null
 
-        fun registerListener (listener: OnLocationChangedListener) {
+        fun registerListener (listener: MapFragment) {
             this.listener = listener
         }
 
@@ -62,6 +65,8 @@ class FusedLocation(context: Context) : LocationCallback() {
 
     override fun onLocationResult(locationResult: LocationResult?) {
         Log.i(TAG, locationResult?.lastLocation.toString())
+        Log.i(TAG, "localizacao")
+        storage.atualizaLocalizacao(locationResult)
         locationResult?.let { notifyListeners(it) }
         super.onLocationResult(locationResult)
     }

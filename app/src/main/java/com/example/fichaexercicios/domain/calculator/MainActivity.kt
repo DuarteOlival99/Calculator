@@ -102,6 +102,11 @@ class MainActivity : AppCompatActivity(),
                 startActivity(intent)
                 finish()
             }
+            R.id.nav_map -> {
+                NavigationManager.goToMapFragment(
+                    supportFragmentManager
+                )
+            }
         }
         drawer.closeDrawer(GravityCompat.START)
         return true
